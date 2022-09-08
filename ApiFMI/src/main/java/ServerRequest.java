@@ -1,7 +1,4 @@
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 
@@ -16,7 +13,7 @@ import java.util.zip.GZIPInputStream;
  */
 public class ServerRequest {
 
-    // TODO: 8.9.2022 getObject function, which turns XML into a class object. 
+    // TODO: 8.9.2022 getObject function, which turns XML into a class object.
 
     /**
      * Connect to a URL and return its raw data as a String.
