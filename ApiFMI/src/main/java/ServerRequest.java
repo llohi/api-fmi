@@ -1,4 +1,11 @@
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import org.w3c.dom.Document;
+import javax.xml.parsers.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 
@@ -13,7 +20,16 @@ import java.util.zip.GZIPInputStream;
  */
 public class ServerRequest {
 
-    // TODO: 8.9.2022 getObject function, which turns XML into a class object.
+    static void getObject(String url) throws ParserConfigurationException, IOException, SAXException {
+
+        Document doc = DocumentBuilderFactory
+                        .newInstance()
+                        .newDocumentBuilder()
+                        .parse(new InputSource(new StringReader(getRawData(url))));
+
+
+        Element root = doc.getDocumentElement();
+    }
 
     /**
      * Connect to a URL and return its raw data as a String.
