@@ -1,11 +1,13 @@
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import org.jdom2.JDOMException;
+import org.jdom2.filter.Filters;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.Element;
 
-import org.w3c.dom.Document;
-import javax.xml.parsers.*;
+import org.jdom2.Document;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 
@@ -20,15 +22,34 @@ import java.util.zip.GZIPInputStream;
  */
 public class ServerRequest {
 
-    static void getObject(String url) throws ParserConfigurationException, IOException, SAXException {
+    static void getObject(String url) throws IOException, JDOMException {
 
-        Document doc = DocumentBuilderFactory
-                        .newInstance()
-                        .newDocumentBuilder()
-                        .parse(new InputSource(new StringReader(getRawData(url))));
+        // Create document of the XML from the url
+        Document doc = new SAXBuilder().build(new URL(url));
+        String query = "//@member";
+        XPathExpression<Element> xpe = XPathFactory.instance().compile(query, Filters.element());
 
+        for (Element e : xpe.evaluate(doc)) {
+            System.out.println(e.getName()+" has "+e.getChildren().size()+" children.");
+        }
 
-        Element root = doc.getDocumentElement();
+        //printChildren(root, 0);
+    }
+
+    /**
+     * Recursive print function to test XML parsing.
+     */
+    static void printChildren(Element root, int n) {
+
+        for (Element e : root.getChildren()) {
+            System.out.print("\t".repeat(n) + e.getName());
+            if (e.getText().trim() != "") {
+                System.out.print("  ->  " + e.getText() + "\n");
+            } else {
+                System.out.println();
+            }
+            printChildren(e, n+1);
+        }
     }
 
     /**
