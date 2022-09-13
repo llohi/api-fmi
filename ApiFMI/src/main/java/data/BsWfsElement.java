@@ -1,0 +1,62 @@
+package data;
+
+import java.util.ArrayList;
+
+public class BsWfsElement {
+
+    private ArrayList<Double> pos;
+    private String time, parameter_name;
+    private double parameter_value;
+
+    public BsWfsElement() {}
+
+
+    public BsWfsElement(ArrayList<Double> pos, String time, String parameter_name, double parameter_value) {
+        this.pos = pos;
+        this.time = time;
+        this.parameter_name = parameter_name;
+        this.parameter_value = parameter_value;
+    }
+
+    public ArrayList<Double> getPos() {
+        return pos;
+    }
+
+    public void setPos(ArrayList<Double> pos) {
+        this.pos = pos;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getParameter_name() {
+        return parameter_name;
+    }
+
+    public void setParameter_name(String parameter_name) {
+        this.parameter_name = parameter_name;
+    }
+
+    public double getParameter_value() {
+        return parameter_value;
+    }
+
+    public void setParameter_value(double parameter_value) {
+        this.parameter_value = parameter_value;
+    }
+
+    @Override
+    public String toString() {
+        return "BsWfsElement{" +
+                "pos=" + pos +
+                ", time='" + time + '\'' +
+                ", parameter_name='" + parameter_name + '\'' +
+                ", parameter_value=" + parameter_value +
+                '}';
+    }
+}
