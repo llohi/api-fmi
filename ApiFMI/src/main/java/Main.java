@@ -13,14 +13,27 @@ public class Main {
             throws IOException, JDOMException {
 
 
-        System.out.println("EXAMPLE_REQUEST_A");
+        /*  TEST OBSERVED DATA
         ServerRequest.getObject(
-                FMIUrl.EXAMPLE_REQUEST_A);
-        System.out.println("\n"+"_".repeat(30));
-        System.out.println("EXAMPLE_REQUEST_B");
-        ServerRequest.getObject(
-                FMIUrl.EXAMPLE_REQUEST_B);
-        System.out.println("\n"+"_".repeat(30));
+                FMIUrl.getObservedURL(
+                        true, true, true,
+                        23, 61, 24, 62,
+                        "2022-09-13T04:00:00Z", "2022-09-13T05:00:00Z", 30));
+        */
 
+        /*  TEST FORECAST DATA
+        ServerRequest.getObject(
+                FMIUrl.getForecastURL(61.49911, 23.78712,
+                        "2022-09-13T10:00:00Z", "2022-09-13T11:00:00Z", 30,
+                        true, true));
+
+         */
+
+        /*  TEST STAT DATA
+        ServerRequest.getObject(
+                FMIUrl.getStatURL(23, 61, 25, 62,
+                        "2022-09-13T04:00:00Z", "2022-09-13T05:00:00Z",
+                        true, true, true));
+        */
     }
 }

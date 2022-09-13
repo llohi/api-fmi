@@ -26,14 +26,15 @@ public class ServerRequest {
 
         // Create document of the XML from the url
         Document doc = new SAXBuilder().build(new URL(url));
-        String query = "//@member";
+        String query = "//*";
         XPathExpression<Element> xpe = XPathFactory.instance().compile(query, Filters.element());
 
+        /*
         for (Element e : xpe.evaluate(doc)) {
             System.out.println(e.getName()+" has "+e.getChildren().size()+" children.");
-        }
+        }*/
 
-        //printChildren(root, 0);
+        printChildren(doc.getRootElement(), 0);
     }
 
     /**
