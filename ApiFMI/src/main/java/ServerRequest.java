@@ -1,13 +1,7 @@
 
 import data.BsWfsElement;
-import org.jdom2.JDOMException;
-import org.jdom2.filter.Filters;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.Element;
 
-import org.jdom2.xpath.XPathFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -36,16 +30,17 @@ import java.util.zip.GZIPInputStream;
  */
 public class ServerRequest {
 
-    final static String OBSERVED_DATA_QUERY = "/wfs:FeatureCollection/wfs:member/BsWfs:BsWfsElement";
+    // Query used to fetch only relevant data (BsWfsElements) from the API response
+    final static String DATA_QUERY = "/wfs:FeatureCollection/wfs:member/BsWfs:BsWfsElement";
 
 
     /**
-     * Get observation data from the url and return all observations
+     * Get data from the url with a xpath expression (query) and return all matches
      * as an array list of BsWfsElement objects.
      * @param url the formatted url
      * @return an array list of BsWfsElement objects
      */
-    static ArrayList<BsWfsElement> getObservationData(String url)
+    static ArrayList<BsWfsElement> getData(String url)
             throws IOException, XPathExpressionException,
                    ParserConfigurationException, SAXException {
 
@@ -74,7 +69,7 @@ public class ServerRequest {
         });
 
         // Set query to observed data
-        XPathExpression xpe = xpath.compile(OBSERVED_DATA_QUERY);
+        XPathExpression xpe = xpath.compile(DATA_QUERY);
 
         // Get data as a NodeList
         Object result = xpe.evaluate(doc, XPathConstants.NODESET);
@@ -84,23 +79,20 @@ public class ServerRequest {
         for (int i = 0; i < nodes.getLength(); i++) {
 
             NodeList attributes = nodes.item(i).getChildNodes();
-            BsWfsElement el = new BsWfsElement();
 
-            // Parse location string into ArrayList<Double>
+            // Parse location string into array of doubles
+            // "1.234 5.678 "  =>  [1.234, 5.678]
             String[] points = attributes.item(1).getTextContent().trim().split(" ");
-            ArrayList<Double> pos = new ArrayList<>();
-            pos.add(Double.valueOf(points[0]));
-            pos.add(Double.valueOf(points[1]));
+            double[] pos = new double[2];
+            pos[0] = Double.parseDouble(points[0]);
+            pos[1] = Double.parseDouble(points[1]);
 
-            // Set values
-            el.setPos(pos);
-            el.setTime(attributes.item(3).getTextContent());
-            el.setParameter_name(attributes.item(5).getTextContent());
-            el.setParameter_value(Double.parseDouble(attributes.item(7).getTextContent()));
-
-            // Add to elements
-            elements.add(el);
-            System.out.println(el);
+            // Add new BsWfsElement to elements
+            elements.add(new BsWfsElement(
+                    pos,                                                              // Coordinates
+                    attributes.item(3).getTextContent(),                        // Time
+                    attributes.item(5).getTextContent(),                        // Parameter name
+                    Double.parseDouble(attributes.item(7).getTextContent())));  // Parameter value
         }
 
         return elements;
