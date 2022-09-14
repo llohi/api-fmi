@@ -1,4 +1,3 @@
-import org.jdom2.JDOMException;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,7 +12,7 @@ import java.util.Arrays;
  */
 public class Main {
     public static void main(String[] args)
-            throws IOException, JDOMException, XPathExpressionException, ParserConfigurationException, SAXException {
+            throws IOException, XPathExpressionException, ParserConfigurationException, SAXException {
 
         // TEST OBSERVED DATA
         String observedUrl = FMIUrl.getObservedURL(23, 61, 24, 62,             // Coordinates
