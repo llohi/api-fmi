@@ -1,28 +1,28 @@
 package data;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BsWfsElement {
 
-    private ArrayList<Double> pos;
+    private double[] pos;
     private String time, parameter_name;
     private double parameter_value;
 
     public BsWfsElement() {}
 
 
-    public BsWfsElement(ArrayList<Double> pos, String time, String parameter_name, double parameter_value) {
+    public BsWfsElement(double[] pos, String time, String parameter_name, double parameter_value) {
         this.pos = pos;
         this.time = time;
         this.parameter_name = parameter_name;
         this.parameter_value = parameter_value;
     }
 
-    public ArrayList<Double> getPos() {
+    public double[] getPos() {
         return pos;
     }
 
-    public void setPos(ArrayList<Double> pos) {
+    public void setPos(double[] pos) {
         this.pos = pos;
     }
 
@@ -53,7 +53,7 @@ public class BsWfsElement {
     @Override
     public String toString() {
         return "BsWfsElement{" +
-                "pos=" + pos +
+                "pos=" + Arrays.toString(pos) +
                 ", time='" + time + '\'' +
                 ", parameter_name='" + parameter_name + '\'' +
                 ", parameter_value=" + parameter_value +
