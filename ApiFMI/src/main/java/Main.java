@@ -1,4 +1,3 @@
-import data.BsWfsElement;
 import org.jdom2.JDOMException;
 import org.xml.sax.SAXException;
 

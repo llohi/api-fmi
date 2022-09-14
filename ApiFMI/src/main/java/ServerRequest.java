@@ -1,6 +1,3 @@
-
-import data.BsWfsElement;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -33,6 +30,21 @@ public class ServerRequest {
     // Query used to fetch only relevant data (BsWfsElements) from the API response
     final static String DATA_QUERY = "/wfs:FeatureCollection/wfs:member/BsWfs:BsWfsElement";
 
+    // NamespaceContext used to inform the XPath of the relevant namespaces
+    final static NamespaceContext NAMESPACE_CONTEXT = new NamespaceContext() {
+        @Override
+        public String getNamespaceURI(String prefix) {
+            return prefix.equals("wfs") ? "http://www.opengis.net/wfs/2.0" :
+                    prefix.equals("BsWfs") ? "http://xml.fmi.fi/schema/wfs/2.0" : null;
+        }
+
+        @Override
+        public String getPrefix(String namespaceURI) { return null; }
+
+        @Override
+        public Iterator<String> getPrefixes(String namespaceURI) { return null; }
+    };
+
 
     /**
      * Get data from the url with a xpath expression (query) and return all matches
@@ -54,19 +66,7 @@ public class ServerRequest {
 
         // Create an XPath to filter through the XML
         XPath xpath = javax.xml.xpath.XPathFactory.newInstance().newXPath();
-        xpath.setNamespaceContext(new NamespaceContext() {
-            @Override  // Configure namespaces
-            public String getNamespaceURI(String prefix) {
-                return prefix.equals("wfs") ? "http://www.opengis.net/wfs/2.0" :
-                        prefix.equals("BsWfs") ? "http://xml.fmi.fi/schema/wfs/2.0" : null;
-            }
-
-            @Override
-            public String getPrefix(String namespaceURI) { return null; }
-
-            @Override
-            public Iterator<String> getPrefixes(String namespaceURI) { return null; }
-        });
+        xpath.setNamespaceContext(NAMESPACE_CONTEXT);
 
         // Set query to observed data
         XPathExpression xpe = xpath.compile(DATA_QUERY);
@@ -104,8 +104,6 @@ public class ServerRequest {
      * @return Raw data as a string
      */
     static String getRawData(String url) throws IOException {
-
-        StringBuilder result = new StringBuilder();
 
         // Configure url connection
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
